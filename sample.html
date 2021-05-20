@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNGMetadata sample</title>
+    <script src="metadataPNG.js"></script>
+    <script src="http://danml.com/js/download.js"></script>
+</head>
+<body>
+    <script>
+    function toDataURL(src, callback) {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onload = function() {
+            var fileReader = new FileReader();
+            fileReader.onloadend = function() {
+                callback(fileReader.result);
+            }
+            fileReader.readAsBinaryString(xhttp.response)
+        };
+
+        xhttp.responseType = 'blob';
+        xhttp.open('GET', src, true);
+        xhttp.send();
+    }
+
+       
+    //Load the image
+    toDataURL('sample.png', function(PNGdata) {
+
+        var newpng=metadataPNG.replatetEXt(dataURL, "new metadata code");
+
+        //Show the image
+        var image = new Image();
+        image.src = "data:image/png;base64," + window.btoa(newpng);
+        document.body.appendChild(image); 
+
+        //Download
+        download("data:image/png;base64," + window.btoa(newpng),"teste.png","image/png")
+
+    });
+    </script>
+</body>
+</html>
