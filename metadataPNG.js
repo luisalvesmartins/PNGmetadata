@@ -8,11 +8,24 @@ metadataPNG.isPNG = function (s) {
   return (sig == metadataPNG.PNG_SIG);
 };
 
-metadataPNG.replatetEXt= function(data, newtEXt){
+metadataPNG.gettEXt= function(PNGdata){
+  // split
+  var list = metadataPNG.splitChunk(PNGdata);
+  var tEXtIndex=list.findIndex(l=>l.type==="tEXt");
+  if (tEXtIndex>0){
+    return list[tEXtIndex].data;
+  }
+  else
+  {
+    return null;    
+  }
+}
+
+metadataPNG.savetEXt= function(data, newtEXt){
   // split
   var list = metadataPNG.splitChunk(data);
   // change
-  var tEXtIndex=list.findIndex(l=>l.type=="tEXt");
+  var tEXtIndex=list.findIndex(l=>l.type==="tEXt");
   if (tEXtIndex>0){
       list[tEXtIndex]=metadataPNG.createChunk("tEXt",newtEXt);
   }
